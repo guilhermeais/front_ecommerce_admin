@@ -1,0 +1,70 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+$test-angular-primary: mat.define-palette(mat.$indigo-palette);
+$test-angular-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+
+$test-angular-warn: mat.define-palette(mat.$red-palette);
+
+$test-angular-theme: mat.define-light-theme((
+  color: (
+    primary: $test-angular-primary,
+    accent: $test-angular-accent,
+    warn: $test-angular-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0
+));
+
+@include mat.all-component-themes($test-angular-theme);
+
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+:root {
+  --primary: #FFFFFF;
+  --primary-ligth: #F9FAFB;
+  --menu: #E5E7EB;
+  --text: #000;
+}
+
+:root .dark-theme {
+  --primary: #0F172A;
+  --primary-ligth: #4B5563;
+  --menu: #1F2937;
+  --text: #fff;
+}
+
+.error-snackbar{
+  --background-color: #f44336;
+  color: white;
+}
+
+.success-snackbar{
+  background-color: #4CAF50;
+}

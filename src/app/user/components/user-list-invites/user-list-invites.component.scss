@@ -1,0 +1,21 @@
+.painel-invite{
+
+  mat-expansion-panel{
+    background-color: var(--primary-ligth);
+    color: var(--text);
+
+    mat-expansion-panel-header{
+
+      mat-panel-title{
+        color: var(--text);
+        mat-icon{
+          fill: var(--text);
+        }
+      }
+
+      mat-panel-description{
+        color: var(--text);
+      }
+    }
+  }
+}

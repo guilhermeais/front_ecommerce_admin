@@ -1,0 +1,77 @@
+<div class="container overflow-x-auto dark:bg-gray-700 p-5">
+  
+  <span class="text-2xl font-bold text-blue-500 dark:text-blue-200">CADASTRAR PRODUTO</span>
+
+  <form class="p-5 bg-transparent" [formGroup]="formCreateProduct">
+
+    <div class="mb-6 flex">
+      <div class="w-full mr-2">
+        <label for="product" class="block text-sm font-medium text-gray-900 dark:text-white">Nome*</label>
+        <input formControlName="name" type="email" id="product" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"required />
+        @if(hasErrorFormControl('name')){
+          <span class="text-red-500 text-sm">{{ getErrorMessage('name') }}</span>
+        }
+      </div>
+
+      <div class="w-full">
+        <label for="price" class="block text-sm font-medium text-gray-900 dark:text-white">Preço*</label>
+        <input formControlName="price" type="number" id="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"required />
+        @if(hasErrorFormControl('price')){
+          <span class="text-red-500 text-sm">{{ getErrorMessage('price') }}</span>
+        }
+      </div>
+    </div>
+
+    <div class="mb-6 flex">
+      <div class="w-full mx-1">
+        <label for="category" class="block text-sm font-medium text-gray-900 dark:text-white">Categoria*</label>
+        <select (change)="selectCategory($event)" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+          <option selected>Selecione uma categoria</option>
+          @for (category of categories; track category.id){
+            <option value="{{category.id}}">{{category.name}}</option>
+          }
+        </select>
+      </div>
+
+      <div class="w-full mx-1">
+        <label for="subCategory" class="block text-sm font-medium text-gray-900 dark:text-white">Subcategoria*</label>
+        <select formControlName="subCategory" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 disabled:cursor-not-allowed">
+          @for (subCategory of subCategories; track subCategory.id){
+            <option [value]="subCategory.id">{{subCategory.name}}</option>
+          }
+        </select>
+        @if(hasErrorFormControl('subCategory')){
+          <span class="text-red-500 text-sm">{{ getErrorMessage('subCategory') }}</span>
+        }
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <label for="description" class="block text-sm font-medium text-gray-900 dark:text-white">Descrição</label>
+      <textarea formControlName="description" id="description" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+    </div>
+
+    <label class="block text-sm font-medium text-gray-900 dark:text-white" for="multiple_files">Imagem dos produtos</label>
+    <input (change)="processFilesSelected($event)" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="multiple_files" type="file">
+
+    @if(imagesPreview.length > 0){
+      <div class="mt-2 flex">
+        @for (image of formCreateProduct.controls['image'].value; track image){
+          <div class="flex flex-col items-center justify-center mr-3">
+            <img src="{{image.preview}}" alt="Imagens escolhidas" width="200" class="object-cover rounded-lg">
+            <button (click)="removeImage(image)" class="w-full bg-red-500 hover:bg-red-700 text-white font-bold rounded focus:outline-none focus:shadow-outline mt-1" type="button">
+              <mat-icon class="scale-90">delete</mat-icon>
+            </button>
+          </div>
+        }
+      </div>
+    }
+
+    <div class="flex justify-end mt-6">
+      <button (click)="createProduct()" [disabled]="formCreateProduct.invalid" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:bg-blue-300" type="submit">
+        Salvar
+      </button>
+    </div>
+  </form>
+
+</div>

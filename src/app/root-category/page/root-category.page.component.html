@@ -1,0 +1,46 @@
+<div class="h-full p-5 bg-white dark:bg-gray-900">
+  <div class="p-5 flex items-end justify-between sm:flex-wrap bg-gray-100 dark:bg-gray-700">
+    <div>
+      @if (categories && categories.length > 0){
+        <app-list-root-category
+          (categorySelected)="receiveCategorySelected($event)"
+          [categories]="categories">
+        </app-list-root-category>
+      }
+    </div>
+
+    <button (click)="openModalCreateCategory()" class="sm:mt-5 h-12 w-40 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      Criar Categoria
+    </button>
+  </div>
+
+  <hr>
+  @if (categorySelected){
+    <div class="mt-5 p-6 bg-gray-100 border border-gray-200 rounded-lg shadow dark:bg-gray-700 dark:border-gray-700 h-96 overflow-x-auto">
+      <div class="flex items-end justify-between mb-5">
+
+        <div class="w-8/12">
+          <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Editar categoria selecionada</label>
+          <input [(ngModel)]="categorySelected.name" type="text" id="category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+        </div>
+
+        <div>
+          <button (click)="editCategoryName(categorySelected)" type="button" class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">Salvar</button>
+          <button (click)="deleteCategory(categorySelected)" type="button" class="ml-5 text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-800">Deletar</button>
+        </div>
+      </div>
+
+      <hr>
+
+      <app-list-sub-category
+        (subCategoryEdit)="receiveSubCategoryEdit($event)"
+        (subCategoryDelete)="receiveSubCategoryDelete($event)"
+        (subCategoryCreate)="receiveSubCategoryCreate($event)"
+        [subCategories]="subCategories"
+        [categorySelected]="categorySelected"
+        >
+      </app-list-sub-category>
+
+    </div>
+  }
+</div>

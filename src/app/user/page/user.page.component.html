@@ -1,0 +1,23 @@
+<div class="user-logged-infos mb-10">
+  @if(user_looged_info){
+    <app-user-logged-info
+    [user_looged_info]="user_looged_info"
+    ></app-user-logged-info>
+  } @else {
+    <app-spinner
+      [message]="user_logged_info_spinner_message"
+      [size]="spinnerSize.medium"
+    ></app-spinner>
+  }
+</div>
+
+<div class="user-invites-list">
+  @if(show_user_invites_list){
+    <app-user-list-invites (user_invited)="sendInvite($event)"></app-user-list-invites>
+  } @else {
+    <app-spinner
+      [message]="user_invites_spinner_message"
+      [size]="spinnerSize.medium"
+    ></app-spinner>
+  }
+</div>

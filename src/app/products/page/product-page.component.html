@@ -1,0 +1,9 @@
+@if(loadingProductCreateOrUpdate){
+    <app-spinner></app-spinner>
+}@else{
+    <app-list-products
+        (createProductEvent)="receivesProductCreate($event)"
+        (deleteProductEvent)="receivesProductDelete($event)"
+        (editProductEvent)="receivesProductEdit($event)">
+    </app-list-products>
+}

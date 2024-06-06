@@ -1,0 +1,9 @@
+space-text{
+  display: flex;
+  justify-content: space-between;
+}
+
+.is-active{
+  background-color: var(--primary);
+  font-size: larger;
+}

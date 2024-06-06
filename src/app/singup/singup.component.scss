@@ -1,0 +1,25 @@
+section{
+  background-image: url("../../assets/page-turner.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
+
+  .fundo{
+    height: 500px
+  }
+}
+
+mat-stepper{
+  background-color: transparent;
+  color: var(--text);
+}
+
+mat-step-header{
+  background-color: var(--primary);
+  color: var(--text);
+
+  div.mat-step-text-label{
+    color: var(--text);
+  }
+}
