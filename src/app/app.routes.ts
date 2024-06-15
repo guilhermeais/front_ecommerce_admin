@@ -8,13 +8,13 @@ export const routes: Routes = [
   },
   {
     title: "Entrar",
-    loadComponent: () => import('./login/login.component').then(m => m.LoginComponent),
+    loadComponent: () => import('./login/page/login.component').then(m => m.LoginComponent),
     path: 'login'
   },
   {
     title: "Registrar-se",
     loadComponent: () => import('./singup/singup.component').then(m => m.SingupComponent),
-    path: 'signup/:uuid'
+    path: 'finish-signup'
   },
   {
     path: "home-page",

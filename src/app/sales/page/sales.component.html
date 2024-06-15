@@ -1,0 +1,18 @@
+
+<app-search-sales-filter
+    (sendSearchSalesEvent)="receiveSearchSalesEvent($event)">
+</app-search-sales-filter>
+
+
+<div class="mt-5 max-h-full">
+    <app-list-sales
+        [salesList]="salesPage.items"
+        (viewMoreEvent)="openDialogViewMore($event)"
+    ></app-list-sales>
+</div>
+
+<div class="mt-5 border border-solid border-gray-200">
+    <app-paginator
+        [totalItems]="salesPage.total">
+    </app-paginator>
+</div>

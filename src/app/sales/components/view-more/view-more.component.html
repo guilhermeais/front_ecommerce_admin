@@ -1,0 +1,48 @@
+<div class="p-10">
+    <h1 class="font-bold text-2xl text-center mb-5 text-black dark:text-white">Detalhes da venda</h1>
+
+    <div class="p-5 border-y border-solid border-gray-200">
+        
+        <span class="flex items-center">
+            <mat-icon class="mr-2 text-green-500">payments</mat-icon>
+            <p>Forma de pagamento: </p>
+            <p class="indent-2">{{data.paymentMethod}}</p>
+        </span>
+    </div>
+
+    <div class="mt-5 p-5 bg-gray-100 border-solid border-gray-200">
+        <p>Endereço de entrega</p>
+        <p>{{addressInfoLine}}</p>
+    </div>
+
+    <div class="mt-5">
+        <mat-table #table [dataSource]="data.items">
+
+            <ng-container matColumnDef="product_name">
+                <mat-header-cell *matHeaderCellDef>Produto</mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.productName}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="product_image">
+                <mat-header-cell *matHeaderCellDef>Produto</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <img [src]="element.productImage" class="object-cover" width="100" height="150" >
+                </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="quantity">
+                <mat-header-cell *matHeaderCellDef> Qtd </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.quantity }} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="price">
+                <mat-header-cell *matHeaderCellDef> Preço </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.unitPrice | currency:'BRL'}} </mat-cell>
+            </ng-container>
+        
+            <mat-header-row *matHeaderRowDef="itemSalesDisplayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: itemSalesDisplayedColumns;"></mat-row>
+        
+        </mat-table>
+    </div>
+</div>

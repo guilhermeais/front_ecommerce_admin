@@ -12,6 +12,7 @@ export class SnackBarNotificationService {
     this._snackBar.open(msg, 'X', {
       horizontalPosition: 'right',
       verticalPosition: 'top',
+      duration: 5000,
       panelClass: 'error-snackbar',
 
     });
@@ -21,6 +22,7 @@ export class SnackBarNotificationService {
     this._snackBar.open(msg, 'X', {
       horizontalPosition: 'right',
       verticalPosition: 'top',
+      duration: 5000,
       panelClass: 'success-snackbar'
     });
   }

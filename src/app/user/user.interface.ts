@@ -1,19 +1,21 @@
 import {ResponseData} from "../@shared/interface/response-interface.data";
-import {DefaultSearchOptions} from "../@shared/util/search";
+import {PageInitOprionsProps} from "../@shared/util/pagination/paginator";
 
 export interface User {
-  name: string,
+  id: string,
   email: string,
-  maritalStatus: string,
-  role: string,
+  name: string,
+  cpf: string,
+  phone: string,
   address: {
-    cep: string,
-    address: string,
-    number: string,
-    state: string,
-    city: string
+      cep: string,
+      address: string,
+      number: string,
+      state: string,
+      city: string,
   },
-  isConfirmed: boolean
+  role: string,
+  isConfirmed: false
 }
 
 export interface UserInvites {
@@ -43,4 +45,4 @@ export interface UserInvites {
 
 export interface UserInvitesResponse extends ResponseData<UserInvites> {}
 
-export interface UserSearchOptions extends DefaultSearchOptions {}
+export interface UserSearchOptions extends PageInitOprionsProps {}

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {LoginComponent} from "./login/login.component";
 import {HttpClientModule} from "@angular/common/http";
 import {SingupComponent} from "./singup/singup.component";
+import { LoginComponent } from './login/page/login.component';
 
 @Component({
   selector: 'app-root',

@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  ecommerce-clients:
+    image: ecommerce-clients
+    build: .
+    ports:
+      - 8081:80

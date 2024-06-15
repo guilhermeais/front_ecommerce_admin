@@ -1,26 +1,14 @@
-table{
+mat-table{
   color: var(--text);
 
-  td{
-    color: var(--text);
-    background-color: var(--primary-ligth);
+  mat-cell{
+      color: var(--text);
+      background-color: var(--primary-ligth);
+  }
+  
+  mat-header-cell{
+      color: var(--text);
+      background-color: var(--menu);
   }
 
-  th{
-    color: var(--text);
-    background-color: var(--menu);
-  }
-}
-
-.table-fixed{
-  table-layout: fixed;
-  width: 100%;
-  height: 80%;
-}
-
-.table-fixed .thead{
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  align-content: center;
 }

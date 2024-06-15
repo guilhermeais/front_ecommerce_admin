@@ -7,6 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { ItensProductData } from '../../product';
+import { SnackBarNotificationService } from '../../../@shared/services/snack-bar-notification.service';
 
 
 @Component({
@@ -30,19 +31,17 @@ export class EditProductComponent {
     private localStorage: LocalStorageService,
     private categoryService: RootCategoryService,
     private dialogRef: MatDialogRef<EditProductComponent>,
-    @Inject(MAT_DIALOG_DATA) public productData: ItensProductData
+    private snackBar: SnackBarNotificationService,
+    @Inject(MAT_DIALOG_DATA) public productData: ItensProductData,
+    
   ) {
     this.buildForm();
     this.verifyCategoryList();
-    this.verifySubCategory(this.productData.category.id);
+    this.verifySubCategory(this.productData.category.rootCategory.id);
   }
 
   get imagesPreview() {
     return this.formEditProduct.controls['image'].value ?? [];
-  }
-
-  get imageInForm(){
-    return this.formEditProduct.controls['image'].value ?? null;
   }
   
   buildForm() {
@@ -52,8 +51,9 @@ export class EditProductComponent {
       description: new FormControl(this.productData.description),
       subCategory: new FormControl({value: this.productData.category.id, disabled: this.disabledSubCategory}, Validators.required),
       category: new FormControl(this.productData.category.rootCategory.id, Validators.required),
-      image: new FormControl(this.productData.image),
+      image: new FormControl({value: [{file: '', preview: this.productData.image}], disabled: false}),
     });
+
   }
 
   verifyCategoryList() {
@@ -77,11 +77,15 @@ export class EditProductComponent {
       });
   }
 
-  verifySubCategory(categoryId: string) {   
+  verifySubCategory(categoryId: string) { 
+    console.log('CATEGORY ID: ', categoryId);
+    
     this.categoryService.getSubCategoriesHttp(categoryId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (value) => {
+          console.log('SUB: ', value);
+          
           this.subCategories = value;
         },
         error: (error) => {
@@ -105,15 +109,15 @@ export class EditProductComponent {
     return '';
   }
 
-  selectCategory(event: any) {
-    console.log('SELECT: ', event.target.value);
+  selectCategory(event: any) {    
+    console.log('CATEGORIA SELECIONADA: ', event.target.value);
     
     const categoryId = event.target.value;
     this.activeSubcategorySelect(categoryId);
   }
 
   activeSubcategorySelect(categoryId: string) {
-    console.log('OPA');
+    console.log('CATEGORY ID SELEÇÃO: ', categoryId);
     
     this.categoryService.getSubCategoriesHttp(categoryId)
       .pipe(takeUntil(this.destroy$))
@@ -142,27 +146,34 @@ export class EditProductComponent {
       const reader = new FileReader();
       const file: File = event.target.files[i];
 
-      if(this.isImageFile(file)){
-        reader.onload = (e) => {
-          files.push({file, preview: reader.result})
-        };
-        reader.readAsDataURL(file);
-      }else{
-        this.alertErrorFileIsNotImage();
+      if(!this.isImageFile(file)){
+        this.snackBar.openErrorSnackBar('As imagens para o produto devem ser do tipo PNG ou JPG');
+        return
       }
+
+      if(file.size > 3 * 1024 * 1024){
+        this.snackBar.openErrorSnackBar('O tamanho máximo para as imagens é de 3MB')
+        return
+      }
+
+      reader.onload = (e) => {
+        files.push({file, preview: reader.result})
+      };
+      reader.readAsDataURL(file);
     }
     
     this.formEditProduct.get('image')?.setValue(files);
-    
-    console.log('IMAGES: ', this.formEditProduct.controls['image'].value);   
   }
 
   isImageFile(file: File): boolean {
     return file.type === 'image/jpeg' || file.type === 'image/png';
   }
 
-  removeImage(){
-    this.formEditProduct.get('image')?.setValue(null);
+  removeImage(image: AbstractControl){
+    const images = this.formEditProduct.controls['image'].value;
+    const index = images.indexOf(image);
+    images.splice(index, 1);
+    this.formEditProduct.get('image')?.setValue(images);
   }
 
   editProduct() {
@@ -179,16 +190,12 @@ export class EditProductComponent {
     formData.append('description', formValue.description);
     formData.append('subCategoryId', formValue.subCategory);
 
-    if(this.imageInForm){
-      const file: File = this.formEditProduct.controls['image'].value
+    for (let i = 0; i < formValue.image.length; i++) {
+      const file: File = formValue.image[i].file;
       formData.append('image', file);
     }
 
     return formData;
-  }
-
-  alertErrorFileIsNotImage() {
-    alert('As imagens para o produto devem ser do tipo PNG ou JPG');
   }
 
   ngOnDestroy(): void {

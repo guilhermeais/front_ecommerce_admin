@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FormsModule} from "@angular/forms";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Dialog} from "@angular/cdk/dialog";
 import {MatDialogRef} from "@angular/material/dialog";
 
@@ -7,24 +7,24 @@ import {MatDialogRef} from "@angular/material/dialog";
   selector: 'app-user-send-invite',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   templateUrl: './user-send-invite.component.html',
   styleUrl: './user-send-invite.component.scss'
 })
 export class UserSendInviteComponent {
-  guestName: string;
-  guestEmail: string;
+  name: string = '';
+  email: string = '';
 
   constructor(
     public dialogRef: MatDialogRef<UserSendInviteComponent>,
-  ) {
-  }
+  ) {}
 
   clickToSendInvite(){
     this.dialogRef.close({
-      name: this.guestName,
-      email: this.guestEmail
+      name: this.name,
+      email: this.email
     });
   }
 

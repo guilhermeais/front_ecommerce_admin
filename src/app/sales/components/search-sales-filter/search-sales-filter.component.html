@@ -1,0 +1,20 @@
+<form class="flex items-start" (submit)="searchSales()" [formGroup]="formSearchSales">
+
+    <mat-form-field class="mr-5 items-end">
+        <mat-label>Data inicial</mat-label>
+        <input matInput formControlName="start_date" [matDatepicker]="dp1"/>
+        <mat-datepicker-toggle matIconSuffix [for]="dp1"></mat-datepicker-toggle>
+        <mat-datepicker #dp1></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Data Final</mat-label>
+        <input matInput formControlName="end_date" [matDatepicker]="dp2"/>
+        <mat-datepicker-toggle matIconSuffix [for]="dp2"></mat-datepicker-toggle>
+        <mat-datepicker #dp2></mat-datepicker>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary">Buscar</button>
+
+
+</form>

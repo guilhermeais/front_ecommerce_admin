@@ -1,0 +1,16 @@
+mat-table{
+    color: var(--text);
+    border: 1px solid rgba(128, 128, 128, 0.267);
+
+    mat-cell{
+        color: var(--text);
+        background-color: var(--primary-ligth);
+    }
+    
+    mat-header-cell{
+        color: var(--text);
+        background-color: var(--menu);
+    }
+
+
+}

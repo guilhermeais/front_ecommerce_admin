@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ToggleDarkModeComponent} from "../@shared/components/toggle-dark-mode/toggle-dark-mode.component";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
@@ -10,6 +10,7 @@ import {CepResponsePipe, singupRequest, singupResponse} from "./singup.interface
 import {SingupService} from "./singup.service";
 import {HttpClientModule} from "@angular/common/http";
 import { LocalStorageService, StorageKeys} from "../@shared/services/local-storage";
+import { SnackBarNotificationService } from '../@shared/services/snack-bar-notification.service';
 
 @Component({
   selector: 'app-singup',
@@ -50,21 +51,22 @@ export class SingupComponent implements OnDestroy{
     private singupService: SingupService,
     private localStorage: LocalStorageService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private snackBar: SnackBarNotificationService,
   ) {
-    this.verifyUUIDParams()
     this.buildForm();
     this.observeCEPChanges();
+    this.verifyTokenInvited()
   }
 
-  verifyUUIDParams(): void {
-    this.route.params
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((params) => {
-        if(params['uuid']){
-          this.invitedId = params['uuid'];
-        }
-      });
+  verifyTokenInvited(): void {
+    this.route.queryParams.subscribe(params => {
+      const token = params['token'];
+      if (!token) {
+        alert('Ops, parece que você não foi convidado para se cadastrar. Por favor, entre em contato com o administrador da plataforma.')
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
   buildForm() {
@@ -162,6 +164,7 @@ export class SingupComponent implements OnDestroy{
         },
         error: (error) => {
           console.log('ERRO AO CADASTRAR', error);
+          this.snackBar.openErrorSnackBar('Ops, algo deu errado. Por favor, tente novamente.');
         }
       });
   };

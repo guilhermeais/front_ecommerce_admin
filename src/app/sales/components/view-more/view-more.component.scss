@@ -1,0 +1,13 @@
+mat-table{
+    color: var(--text);
+    
+    mat-cell{
+        color: var(--text);
+        background-color: var(--primary-ligth);
+    }
+    
+    mat-header-cell{
+        color: var(--text);
+        background-color: var(--menu);
+    }
+}

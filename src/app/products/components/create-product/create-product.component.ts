@@ -6,6 +6,7 @@ import { RootCategoryService } from '../../../root-category/root-category.servic
 import { Subject, takeUntil } from 'rxjs';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
+import { SnackBarNotificationService } from '../../../@shared/services/snack-bar-notification.service';
 
 
 @Component({
@@ -29,7 +30,8 @@ export class CreateProductComponent implements OnDestroy{
   constructor(
     private localStorage: LocalStorageService,
     private categoryService: RootCategoryService,
-    private dialogRef: MatDialogRef<CreateProductComponent>
+    private dialogRef: MatDialogRef<CreateProductComponent>,
+    private snackBar: SnackBarNotificationService
   ) {
     this.buildForm();
     this.verifyCategoryList();
@@ -38,10 +40,6 @@ export class CreateProductComponent implements OnDestroy{
   get imagesPreview() {
     return this.formCreateProduct.controls['image'].value ?? [];
   }
-
-  // get formInvalid() {
-
-  // }
 
   verifyCategoryList() {
     const localCategory = this.localStorage.get(StorageKeys.categoryList);
@@ -74,6 +72,7 @@ export class CreateProductComponent implements OnDestroy{
       price: new FormControl(0, Validators.required),
       subCategory: new FormControl({value: null, disabled: this.disabledSubCategory}, Validators.required),
       description: new FormControl(''),
+      isShown: new FormControl(true),
       image: new FormControl(''),
     });
   }
@@ -122,19 +121,23 @@ export class CreateProductComponent implements OnDestroy{
       const reader = new FileReader();
       const file: File = event.target.files[i];
 
-      if(this.isImageFile(file)){
-        reader.onload = (e) => {
-          files.push({file, preview: reader.result})
-        };
-        reader.readAsDataURL(file);
-      }else{
-        this.alertErrorFileIsNotImage();
+      if(!this.isImageFile(file)){
+        this.snackBar.openErrorSnackBar('As imagens para o produto devem ser do tipo PNG ou JPG');
+        return
       }
+
+      if(file.size > 3 * 1024 * 1024){
+        this.snackBar.openErrorSnackBar('O tamanho máximo para as imagens é de 3MB')
+        return
+      }
+
+      reader.onload = (e) => {
+        files.push({file, preview: reader.result})
+      };
+      reader.readAsDataURL(file);
     }
     
     this.formCreateProduct.get('image')?.setValue(files);
-    
-    console.log('IMAGES: ', this.formCreateProduct.controls['image'].value);   
   }
 
   isImageFile(file: File): boolean {
@@ -161,6 +164,7 @@ export class CreateProductComponent implements OnDestroy{
     formData.append('price', formValue.price);
     formData.append('description', formValue.description);
     formData.append('subCategoryId', formValue.subCategory);
+    formData.append('isShown', formValue.isShown);
 
     for (let i = 0; i < formValue.image.length; i++) {
       const file: File = formValue.image[i].file;
@@ -168,10 +172,6 @@ export class CreateProductComponent implements OnDestroy{
     }
 
     return formData;
-  }
-
-  alertErrorFileIsNotImage() {
-    alert('As imagens para o produto devem ser do tipo PNG ou JPG');
   }
 
   ngOnDestroy(): void {

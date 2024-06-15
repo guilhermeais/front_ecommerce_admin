@@ -9,7 +9,6 @@ import {
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {api} from "../api";
 import {SnackBarNotificationService} from "../@shared/services/snack-bar-notification.service";
-import {Search} from "../@shared/util/search";
 import {LocalStorageService, StorageKeys} from "../@shared/services/local-storage";
 
 @Injectable({
@@ -31,11 +30,7 @@ export class RootCategoryService {
     })
   }
 
-  getCategoriesHttp(pageOptions?: CategoryPageOptions): Observable<Category[]> {
-    // const queryPageOptions = pageOptions
-    //   ? Search.toQuerySearchOptions(pageOptions)
-    //   : Search.InitialSearchOptions()
-    
+  getCategoriesHttp(pageOptions?: CategoryPageOptions): Observable<Category[]> {   
     return this.http.get<CategoryResponseData>(`${api}/admin/categories`, {
       headers: this.headers
     })

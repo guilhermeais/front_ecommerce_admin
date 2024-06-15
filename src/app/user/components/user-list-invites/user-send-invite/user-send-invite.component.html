@@ -1,12 +1,14 @@
 <div class="w-full h-full p-5 bg-gray-100 dark:bg-gray-700">
   <h5 class="text-2xl text-gray-700 dark:text-gray-100 font-normal text-center">Convidar novo integrante</h5>
+
+
   <div>
     <label class="block text-gray-700 dark:text-gray-300 font-bold mt-5">Nome</label>
-    <input type="text" class="w-full mt-5 p-3 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" placeholder="Nome do convidado" [(ngModel)]="guestName" />
+    <input type="text" class="w-full mt-5 p-3 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" [(ngModel)]="name" placeholder="Nome do convidado"/>
   </div>
   <div>
     <label class="block text-gray-700 dark:text-gray-300 font-bold mt-5">Email</label>
-    <input type="text" class="w-full mt-5 p-3 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" placeholder="Email do convidado" [(ngModel)]="guestEmail" />
+    <input type="text" class="w-full mt-5 p-3 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" [(ngModel)]="email" placeholder="Email do convidado"/>
   </div>
 
   <div class="flex items-center justify-end mt-5">

@@ -90,6 +90,8 @@ export class UserPageComponent implements OnDestroy{
   }
 
   sendInvite(user_invited: any){
+    console.log('USER INVITED', user_invited);
+    
    this.userService.sendInviteHttp(user_invited)
      .pipe(takeUntil(this.destroy$))
      .subscribe({

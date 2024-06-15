@@ -22,8 +22,8 @@ export class ProductsService {
     })
   }
 
-  getProductsHttp(): Observable<ProductsPage> {
-    return this.http.get<ProductsPage>(`${api}/admin/products`, {
+  getProductsHttp(query: string): Observable<ProductsPage> {
+    return this.http.get<ProductsPage>(`${api}/admin/products${query}`, {
       headers: this.headers
     })
   }

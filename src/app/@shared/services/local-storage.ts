@@ -8,30 +8,31 @@ export class LocalStorageService {
   constructor() {
   }
   set(key: string, value: any) {
-    localStorage.setItem(key, JSON.stringify(value));
+    window.localStorage.setItem(key, JSON.stringify(value));
   }
 
   get(key: string) {
-    const keyStorage = localStorage.getItem(key);
+    const keyStorage = window.localStorage.getItem(key);
     return keyStorage ? JSON.parse(keyStorage) : null;
   }
 
   remove(key: string) {
-    localStorage.removeItem(key);
+    window.localStorage.removeItem(key);
   }
 
   clear() {
-    localStorage.clear();
+    window.localStorage.clear();
   }
 
   has(key: string) {
-    return localStorage.hasOwnProperty(key);
+    return window.localStorage.hasOwnProperty(key);
   }
 
   keys() {
-    return Object.keys(localStorage);
+    return Object.keys(window.localStorage);
   }
 }
+
 export enum StorageKeys {
   user_logged_info = 'user_logged_info',
   user_logged_token = 'user_logged_token',

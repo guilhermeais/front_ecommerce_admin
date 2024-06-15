@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {SidebarComponent} from "../components/sidebar/sidebar.component";
 import {ChatComponent} from "../../chat/components/chat/chat.component";
 import {RouterOutlet} from "@angular/router";
-import {ClientsPageComponent} from "../../clients/page/clients-page.component";
 
 @Component({
   selector: 'app-home-page',
@@ -10,8 +9,7 @@ import {ClientsPageComponent} from "../../clients/page/clients-page.component";
   imports: [
     SidebarComponent,
     ChatComponent,
-    RouterOutlet,
-    ClientsPageComponent
+    RouterOutlet
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss'

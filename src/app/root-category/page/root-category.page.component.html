@@ -1,6 +1,6 @@
 <div class="h-full p-5 bg-white dark:bg-gray-900">
-  <div class="p-5 flex items-end justify-between sm:flex-wrap bg-gray-100 dark:bg-gray-700">
-    <div>
+  <div class="p-5 flex justify-end sm:flex-wrap bg-gray-100 dark:bg-gray-700">
+    <div class="w-full">
       @if (categories && categories.length > 0){
         <app-list-root-category
           (categorySelected)="receiveCategorySelected($event)"
@@ -9,7 +9,7 @@
       }
     </div>
 
-    <button (click)="openModalCreateCategory()" class="sm:mt-5 h-12 w-40 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    <button (click)="openModalCreateCategory()" class="sm:mt-5 h-12 w-40 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded">
       Criar Categoria
     </button>
   </div>

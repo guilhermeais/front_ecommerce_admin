@@ -1,0 +1,46 @@
+
+<mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="cod">
+        <mat-header-cell *matHeaderCellDef>Cod .</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.id | truncate: 5}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef> Data </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.date | date:'dd/MM/yyyy' }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="payment">
+        <mat-header-cell *matHeaderCellDef> Pagamento </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.paymentMethod}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="total">
+        <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.totalAmount | currency:'BRL' }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> Ações </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <button [matMenuTriggerFor]="menu" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+      
+              <mat-menu #menu="matMenu">
+                <button (click)="sendViewMoreEvent(element)" mat-menu-item>
+                    <mat-icon>visibility</mat-icon>
+                    Ver detalhes
+                </button>
+      
+              </mat-menu>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+</mat-table>
+
+

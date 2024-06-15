@@ -14,12 +14,13 @@
       <p class="text-gray-700 dark:text-gray-300">Nome: <span class="text-black font-bold dark:text-white">{{user_looged_info.name}}</span></p>
       <p class="text-gray-700 dark:text-gray-300">Email: <span class="text-black font-bold dark:text-white">{{user_looged_info.email}}</span></p>
       <p class="text-gray-700 dark:text-gray-300">Cargo: <span class="text-black font-bold dark:text-white">{{user_looged_info.role}}</span></p>
-      <p class="text-gray-700 dark:text-gray-300">Estado civil: <span class="text-black font-bold dark:text-white">{{user_looged_info.maritalStatus}}</span></p>
-      <p class="text-gray-700 dark:text-gray-300">Endereço: <span class="text-black font-bold dark:text-white">{{user_looged_info.address.address}}</span></p>
-      <p class="text-gray-700 dark:text-gray-300">Cidade: <span class="text-black font-bold dark:text-white">{{user_looged_info.address.city}}</span></p>
-      <p class="text-gray-700 dark:text-gray-300">Estado: <span class="text-black font-bold dark:text-white">{{user_looged_info.address.state}}</span></p>
-      <p class="text-gray-700 dark:text-gray-300">CEP: <span class="text-black font-bold dark:text-white">{{user_looged_info.address.cep}}</span></p>
-      <p class="text-gray-700 dark:text-gray-300">Numero: <span class="text-black font-bold dark:text-white">{{user_looged_info.address.number}}</span></p>
+      @if(user_looged_info?.address){
+        <p class="text-gray-700 dark:text-gray-300">Endereço: <span class="text-black font-bold dark:text-white">{{user_looged_info?.address.address}}</span></p>
+        <p class="text-gray-700 dark:text-gray-300">Cidade: <span class="text-black font-bold dark:text-white">{{user_looged_info?.address.city}}</span></p>
+        <p class="text-gray-700 dark:text-gray-300">Estado: <span class="text-black font-bold dark:text-white">{{user_looged_info?.address.state}}</span></p>
+        <p class="text-gray-700 dark:text-gray-300">CEP: <span class="text-black font-bold dark:text-white">{{user_looged_info?.address.cep}}</span></p>
+        <p class="text-gray-700 dark:text-gray-300">Numero: <span class="text-black font-bold dark:text-white">{{user_looged_info?.address.number}}</span></p>
+      }
     </div>
   </div>
 

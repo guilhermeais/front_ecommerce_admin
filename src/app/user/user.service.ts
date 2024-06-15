@@ -4,7 +4,6 @@ import {BehaviorSubject, catchError, map, Observable, of} from "rxjs";
 import {User, UserInvites, UserInvitesResponse, UserSearchOptions} from "./user.interface";
 import {api} from "../api";
 import {SnackBarNotificationService} from "../@shared/services/snack-bar-notification.service";
-import {Search} from "../@shared/util/search";
 import {LocalStorageService, StorageKeys} from "../@shared/services/local-storage";
 import {UserInvited} from "./components/user-list-invites/user-list-invites.component";
 
@@ -41,6 +40,8 @@ export class UserService {
   }
 
   sendInviteHttp(credentials: UserInvited): Observable<any>{
+    console.log(credentials);
+    
     return this.http.post(`${api}/admin/sign-up/invites`, credentials, {
       headers: this.headers
     })
