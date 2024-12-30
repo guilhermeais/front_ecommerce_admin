@@ -68,7 +68,7 @@ export class EditProductComponent {
         Validators.required
       ),
       image: new FormControl({
-        value: [{ file: '', preview: this.productData.image }],
+        value: { file: '', preview: this.productData.image },
         disabled: false,
       }),
     });
