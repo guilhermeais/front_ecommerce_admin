@@ -47,8 +47,8 @@ export class EditProductComponent {
     this.verifySubCategory(this.productData.category.rootCategory.id);
   }
 
-  get imagesPreview() {
-    return this.formEditProduct.controls['image'].value ?? [];
+  get imagePreview() {
+    return this.formEditProduct.controls['image'].value
   }
 
   buildForm() {
