@@ -90,7 +90,7 @@ export class ProductPageComponent implements OnDestroy {
   }
 
   receivesProductEdit(product: {formData: FormData, id: string}){
-    console.log('Product: ', product);
+    console.log('[receivesProductEdit] Product: ', product);
     
     this.loadingProductCreateOrUpdate = true;
     this.updateProductService(product);

@@ -61,7 +61,7 @@ export class ListProductsComponent implements OnInit, OnChanges{
   }
 
   openDialogEditProduct(product: ItensProductData) {
-    console.log('Product: ', product);
+    console.log('[openDialogEditProduct] Product: ', product);
     
     const dialogRef = this.dialog.open(EditProductComponent, {
       width: '700px',
@@ -69,7 +69,7 @@ export class ListProductsComponent implements OnInit, OnChanges{
     })
 
     dialogRef.afterClosed().subscribe({
-      next: (result: {form: FormData, id: string}) => {
+      next: (result: {formData: FormData, id: string}) => {
         if(result){
           this.editProductEvent.emit(result);
         }

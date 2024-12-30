@@ -60,6 +60,9 @@ export class ProductsService {
   }
 
   updateProductHttp(product: FormData, id: string): Observable<any> {
+    product.forEach((value, key) => {
+      console.log(`[updateProductHttp] Key: ${key}, Value: ${value}`);
+    });
     return this.http.patch<any>(`${api}/admin/products/${id}`, product, {
       headers: this.headers.delete('Content-Type')
     })
