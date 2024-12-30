@@ -41,7 +41,7 @@ import { CurrencyPipe } from '@angular/common';
 })
 export class ListProductsComponent implements OnInit, OnChanges{
   @Input({required: true}) productsList: ItensProductData[] = [];
-  @Output() editProductEvent: EventEmitter<{form: FormData, id: string}> = new EventEmitter<{form: FormData, id: string}>();
+  @Output() editProductEvent: EventEmitter<{formData: FormData, id: string}> = new EventEmitter<{formData: FormData, id: string}>();
   products: ProductCreateData[];
 
   displayedColumns: string[] = ['cod', 'image', 'name', 'price', 'actions']
