@@ -165,6 +165,7 @@ export class EditProductComponent {
   }
 
   processFilesSelected(event: any) {
+    console.log('[processFilesSelected] receive event: ', event)
     const reader = new FileReader();
     const file: File = event.target.files[0];
 
@@ -204,6 +205,7 @@ export class EditProductComponent {
   buildFormData() {
     const formData = new FormData();
     const formValue = this.formEditProduct.value;
+    console.log('[buildFormData]: ', formValue)
 
     formData.append('name', formValue.name);
     formData.append('price', formValue.price);
