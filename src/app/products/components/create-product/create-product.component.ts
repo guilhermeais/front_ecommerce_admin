@@ -1,29 +1,36 @@
 import { Component, OnDestroy } from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import { Category, SubCategory } from '../../../root-category/root-category.intertface';
-import { LocalStorageService, StorageKeys } from '../../../@shared/services/local-storage';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  Category,
+  SubCategory,
+} from '../../../root-category/root-category.intertface';
+import {
+  LocalStorageService,
+  StorageKeys,
+} from '../../../@shared/services/local-storage';
 import { RootCategoryService } from '../../../root-category/root-category.service';
 import { Subject, takeUntil } from 'rxjs';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { SnackBarNotificationService } from '../../../@shared/services/snack-bar-notification.service';
 
-
 @Component({
   selector: 'app-create-product',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatIcon
-  ],
+  imports: [ReactiveFormsModule, MatIcon],
   templateUrl: './create-product.component.html',
-  styleUrl: './create-product.component.scss'
+  styleUrl: './create-product.component.scss',
 })
-export class CreateProductComponent implements OnDestroy{
-
+export class CreateProductComponent implements OnDestroy {
   formCreateProduct: FormGroup;
-  categories: Category[] = []
-  subCategories: SubCategory[] = []
+  categories: Category[] = [];
+  subCategories: SubCategory[] = [];
   destroy$: Subject<void> = new Subject<void>();
   disabledSubCategory: boolean = true;
 
@@ -44,16 +51,17 @@ export class CreateProductComponent implements OnDestroy{
   verifyCategoryList() {
     const localCategory = this.localStorage.get(StorageKeys.categoryList);
 
-    if(localCategory && localCategory.length > 0) {
+    if (localCategory && localCategory.length > 0) {
       this.categories = localCategory;
       return;
     }
 
-    this.categoryService.getCategoriesHttp()
+    this.categoryService
+      .getCategoriesHttp()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (value) => {
-          if(value.length === 0) {
+          if (value.length === 0) {
             this.showErrorWithoutCategory();
           }
           this.categories = value;
@@ -63,14 +71,19 @@ export class CreateProductComponent implements OnDestroy{
   }
 
   showErrorWithoutCategory() {
-    alert('Para cadastrar produtos é necessário ter pelo menos uma categoria cadastrada.');
+    alert(
+      'Para cadastrar produtos é necessário ter pelo menos uma categoria cadastrada.'
+    );
   }
 
   buildForm() {
     this.formCreateProduct = new FormGroup({
       name: new FormControl('', Validators.required),
       price: new FormControl(0, Validators.required),
-      subCategory: new FormControl({value: null, disabled: this.disabledSubCategory}, Validators.required),
+      subCategory: new FormControl(
+        { value: null, disabled: this.disabledSubCategory },
+        Validators.required
+      ),
       description: new FormControl(''),
       isShown: new FormControl(true),
       image: new FormControl(''),
@@ -78,7 +91,10 @@ export class CreateProductComponent implements OnDestroy{
   }
 
   hasErrorFormControl(controlName: string) {
-    return this.formCreateProduct.get(controlName)?.touched && this.formCreateProduct.get(controlName)?.invalid;
+    return (
+      this.formCreateProduct.get(controlName)?.touched &&
+      this.formCreateProduct.get(controlName)?.invalid
+    );
   }
 
   getErrorMessage(controlName: string) {
@@ -94,57 +110,55 @@ export class CreateProductComponent implements OnDestroy{
   }
 
   activeSubcategorySelect(categoryId: string) {
-    this.categoryService.getSubCategoriesHttp(categoryId)
+    this.categoryService
+      .getSubCategoriesHttp(categoryId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (value) => {
-          if(value.length === 0) {
+          if (value.length === 0) {
             alert('Não há subcategorias cadastradas para essa categoria');
             this.subCategories = [];
-            return
+            return;
           }
           this.subCategories = value;
           this.formCreateProduct.get('subCategory')?.enable();
-          console.log('SUB: ',this.subCategories);
-          
+          console.log('SUB: ', this.subCategories);
         },
         error: (error) => {
           alert('Erro ao buscar subcategorias');
-        }
+        },
       });
   }
 
   processFilesSelected(event: any) {
-    const files: any[] = []
+    const reader = new FileReader();
+    const file: File = event.target.files[0];
 
-    for (let i = 0; i < event.target.files.length; i++) {
-      const reader = new FileReader();
-      const file: File = event.target.files[i];
-
-      if(!this.isImageFile(file)){
-        this.snackBar.openErrorSnackBar('As imagens para o produto devem ser do tipo PNG ou JPG');
-        return
-      }
-
-      if(file.size > 3 * 1024 * 1024){
-        this.snackBar.openErrorSnackBar('O tamanho máximo para as imagens é de 3MB')
-        return
-      }
-
-      reader.onload = (e) => {
-        files.push({file, preview: reader.result})
-      };
-      reader.readAsDataURL(file);
+    if (!this.isImageFile(file)) {
+      this.snackBar.openErrorSnackBar(
+        'As imagens para o produto devem ser do tipo PNG ou JPG'
+      );
+      return;
     }
-    
-    this.formCreateProduct.get('image')?.setValue(files);
+
+    if (file.size > 3 * 1024 * 1024) {
+      this.snackBar.openErrorSnackBar(
+        'O tamanho máximo para as imagens é de 3MB'
+      );
+      return;
+    }
+
+    reader.onload = (e) => {
+      this.formCreateProduct.get('image')?.setValue({ file, preview: reader.result });
+    };
+    reader.readAsDataURL(file);
   }
 
   isImageFile(file: File): boolean {
     return file.type === 'image/jpeg' || file.type === 'image/png';
   }
 
-  removeImage(image: AbstractControl){
+  removeImage(image: AbstractControl) {
     const images = this.formCreateProduct.controls['image'].value;
     const index = images.indexOf(image);
     images.splice(index, 1);
@@ -178,5 +192,4 @@ export class CreateProductComponent implements OnDestroy{
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }
