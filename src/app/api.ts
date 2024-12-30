@@ -1,1 +1,1 @@
-export const api = 'https://pia-labs-ecommerce-api-e3ynalptgq-ue.a.run.app'
+export const api = 'http://201.54.0.32/backend'
