@@ -1,7 +1,19 @@
-import { Component, Inject} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import { Category, SubCategory } from '../../../root-category/root-category.intertface';
-import { LocalStorageService, StorageKeys } from '../../../@shared/services/local-storage';
+import { Component, Inject } from '@angular/core';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  Category,
+  SubCategory,
+} from '../../../root-category/root-category.intertface';
+import {
+  LocalStorageService,
+  StorageKeys,
+} from '../../../@shared/services/local-storage';
 import { RootCategoryService } from '../../../root-category/root-category.service';
 import { Subject, takeUntil } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -9,21 +21,17 @@ import { MatIcon } from '@angular/material/icon';
 import { ItensProductData } from '../../product';
 import { SnackBarNotificationService } from '../../../@shared/services/snack-bar-notification.service';
 
-
 @Component({
   selector: 'app-edit-product',
   standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatIcon
-  ],
+  imports: [ReactiveFormsModule, MatIcon],
   templateUrl: './edit-product.component.html',
-  styleUrl: './edit-product.component.scss'
+  styleUrl: './edit-product.component.scss',
 })
 export class EditProductComponent {
   formEditProduct: FormGroup;
-  categories: Category[] = []
-  subCategories: SubCategory[] = []
+  categories: Category[] = [];
+  subCategories: SubCategory[] = [];
   destroy$: Subject<void> = new Subject<void>();
   disabledSubCategory: boolean = false;
 
@@ -32,8 +40,7 @@ export class EditProductComponent {
     private categoryService: RootCategoryService,
     private dialogRef: MatDialogRef<EditProductComponent>,
     private snackBar: SnackBarNotificationService,
-    @Inject(MAT_DIALOG_DATA) public productData: ItensProductData,
-    
+    @Inject(MAT_DIALOG_DATA) public productData: ItensProductData
   ) {
     this.buildForm();
     this.verifyCategoryList();
@@ -43,32 +50,44 @@ export class EditProductComponent {
   get imagesPreview() {
     return this.formEditProduct.controls['image'].value ?? [];
   }
-  
+
   buildForm() {
     this.formEditProduct = new FormGroup({
       name: new FormControl(this.productData.name, Validators.required),
       price: new FormControl(this.productData.price, Validators.required),
       description: new FormControl(this.productData.description),
-      subCategory: new FormControl({value: this.productData.category.id, disabled: this.disabledSubCategory}, Validators.required),
-      category: new FormControl(this.productData.category.rootCategory.id, Validators.required),
-      image: new FormControl({value: [{file: '', preview: this.productData.image}], disabled: false}),
+      subCategory: new FormControl(
+        {
+          value: this.productData.category.id,
+          disabled: this.disabledSubCategory,
+        },
+        Validators.required
+      ),
+      category: new FormControl(
+        this.productData.category.rootCategory.id,
+        Validators.required
+      ),
+      image: new FormControl({
+        value: [{ file: '', preview: this.productData.image }],
+        disabled: false,
+      }),
     });
-
   }
 
   verifyCategoryList() {
     const localCategory = this.localStorage.get(StorageKeys.categoryList);
 
-    if(localCategory && localCategory.length > 0) {
+    if (localCategory && localCategory.length > 0) {
       this.categories = localCategory;
       return;
     }
 
-    this.categoryService.getCategoriesHttp()
+    this.categoryService
+      .getCategoriesHttp()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (value) => {
-          if(value.length === 0) {
+          if (value.length === 0) {
             this.showErrorWithoutCategory();
           }
           this.categories = value;
@@ -77,29 +96,35 @@ export class EditProductComponent {
       });
   }
 
-  verifySubCategory(categoryId: string) { 
+  verifySubCategory(categoryId: string) {
     console.log('CATEGORY ID: ', categoryId);
-    
-    this.categoryService.getSubCategoriesHttp(categoryId)
+
+    this.categoryService
+      .getSubCategoriesHttp(categoryId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (value) => {
           console.log('SUB: ', value);
-          
+
           this.subCategories = value;
         },
         error: (error) => {
           alert('Erro ao buscar subcategorias');
-        }
+        },
       });
   }
 
   showErrorWithoutCategory() {
-    alert('Para editar produtos é necessário ter pelo menos uma categoria cadastrada.');
+    alert(
+      'Para editar produtos é necessário ter pelo menos uma categoria cadastrada.'
+    );
   }
 
   hasErrorFormControl(controlName: string) {
-    return this.formEditProduct.get(controlName)?.touched && this.formEditProduct.get(controlName)?.invalid;
+    return (
+      this.formEditProduct.get(controlName)?.touched &&
+      this.formEditProduct.get(controlName)?.invalid
+    );
   }
 
   getErrorMessage(controlName: string) {
@@ -109,76 +134,71 @@ export class EditProductComponent {
     return '';
   }
 
-  selectCategory(event: any) {    
+  selectCategory(event: any) {
     console.log('CATEGORIA SELECIONADA: ', event.target.value);
-    
+
     const categoryId = event.target.value;
     this.activeSubcategorySelect(categoryId);
   }
 
   activeSubcategorySelect(categoryId: string) {
     console.log('CATEGORY ID SELEÇÃO: ', categoryId);
-    
-    this.categoryService.getSubCategoriesHttp(categoryId)
+
+    this.categoryService
+      .getSubCategoriesHttp(categoryId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (value) => {
-          if(value.length === 0) {
+          if (value.length === 0) {
             alert('Não há subcategorias cadastradas para essa categoria');
             this.subCategories = [];
-            return
+            return;
           }
           this.subCategories = value;
           this.formEditProduct.get('subCategory')?.enable();
-          console.log('SUB: ',this.subCategories);
-          
+          console.log('SUB: ', this.subCategories);
         },
         error: (error) => {
           alert('Erro ao buscar subcategorias');
-        }
+        },
       });
   }
 
   processFilesSelected(event: any) {
-    const files: any[] = []
+    const reader = new FileReader();
+    const file: File = event.target.files[0];
 
-    for (let i = 0; i < event.target.files.length; i++) {
-      const reader = new FileReader();
-      const file: File = event.target.files[i];
-
-      if(!this.isImageFile(file)){
-        this.snackBar.openErrorSnackBar('As imagens para o produto devem ser do tipo PNG ou JPG');
-        return
-      }
-
-      if(file.size > 3 * 1024 * 1024){
-        this.snackBar.openErrorSnackBar('O tamanho máximo para as imagens é de 3MB')
-        return
-      }
-
-      reader.onload = (e) => {
-        files.push({file, preview: reader.result})
-      };
-      reader.readAsDataURL(file);
+    if (!this.isImageFile(file)) {
+      this.snackBar.openErrorSnackBar(
+        'As imagens para o produto devem ser do tipo PNG ou JPG'
+      );
+      return;
     }
-    
-    this.formEditProduct.get('image')?.setValue(files);
+
+    if (file.size > 3 * 1024 * 1024) {
+      this.snackBar.openErrorSnackBar(
+        'O tamanho máximo para as imagens é de 3MB'
+      );
+      return;
+    }
+
+    reader.onload = () => {
+      this.formEditProduct.get('image')?.setValue(file);
+    };
+    reader.readAsDataURL(file);
   }
 
   isImageFile(file: File): boolean {
     return file.type === 'image/jpeg' || file.type === 'image/png';
   }
 
-  removeImage(image: AbstractControl){
-    const images = this.formEditProduct.controls['image'].value;
-    const index = images.indexOf(image);
-    images.splice(index, 1);
-    this.formEditProduct.get('image')?.setValue(images);
+  removeImage() {
+    this.formEditProduct.get('image')?.setValue(null);
   }
 
   editProduct() {
     const formData = this.buildFormData();
-    this.dialogRef.close({formData, id: this.productData.id});
+    this.dialogRef.close({ formData, id: this.productData.id });
   }
 
   buildFormData() {
@@ -189,11 +209,7 @@ export class EditProductComponent {
     formData.append('price', formValue.price);
     formData.append('description', formValue.description);
     formData.append('subCategoryId', formValue.subCategory);
-
-    for (let i = 0; i < formValue.image.length; i++) {
-      const file: File = formValue.image[i].file;
-      formData.append('image', file);
-    }
+    formData.append('image', formValue.image);
 
     return formData;
   }
