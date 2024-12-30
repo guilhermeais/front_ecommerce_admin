@@ -36,7 +36,7 @@ export class ProductsService {
     console.log(product.get('subCategoryId'));
     
     return this.http.post<any>(`${api}/admin/products`, product, {
-      headers: this.headers
+      headers: this.headers.delete('Content-Type')
     })
   }
 
@@ -61,7 +61,7 @@ export class ProductsService {
 
   updateProductHttp(product: FormData, id: string): Observable<any> {
     return this.http.patch<any>(`${api}/admin/products/${id}`, product, {
-      headers: this.headers
+      headers: this.headers.delete('Content-Type')
     })
   }
 
