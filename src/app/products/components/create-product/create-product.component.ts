@@ -38,7 +38,7 @@ export class CreateProductComponent implements OnDestroy{
   }
 
   get imagePreview() {
-    return this.formCreateProduct.controls['image'].value;
+    return this.formCreateProduct.get('image').value;
   }
 
   verifyCategoryList() {

@@ -48,7 +48,7 @@ export class EditProductComponent {
   }
 
   get imagePreview() {
-    return this.formEditProduct.controls['image'].value
+    return this.formEditProduct.get('image').value
   }
 
   buildForm() {
@@ -183,7 +183,7 @@ export class EditProductComponent {
     }
 
     reader.onload = () => {
-      this.formEditProduct.get('image')?.setValue(file);
+      this.formEditProduct.get('image')?.setValue({file,  preview: reader.result });
     };
     reader.readAsDataURL(file);
   }

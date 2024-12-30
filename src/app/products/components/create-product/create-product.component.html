@@ -54,7 +54,7 @@
     <label class="block text-sm font-medium text-gray-900 dark:text-white" for="multiple_files">Imagem dos produtos</label>
     <input (change)="processFilesSelected($event)" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="multiple_files" type="file">
 
-    @if(imagePreview){
+    @if(imagePreview?.preview){
       <div class="mt-2 flex">
           <div class="flex flex-col items-center justify-center mr-3">
             <img src="{{imagePreview.preview}}" alt="Imagens escolhidas" width="200" class="object-cover rounded-lg">
