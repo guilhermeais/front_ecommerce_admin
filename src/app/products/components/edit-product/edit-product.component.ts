@@ -211,7 +211,7 @@ export class EditProductComponent {
     formData.append('price', formValue.price);
     formData.append('description', formValue.description);
     formData.append('subCategoryId', formValue.subCategory);
-    formData.append('image', formValue.image);
+    formData.append('image', formValue.image.file);
 
     return formData;
   }
