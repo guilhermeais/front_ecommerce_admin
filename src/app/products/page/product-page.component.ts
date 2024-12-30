@@ -89,7 +89,7 @@ export class ProductPageComponent implements OnDestroy {
     });
   }
 
-  receivesProductEdit(product: {form: FormData, id: string}){
+  receivesProductEdit(product: {formData: FormData, id: string}){
     console.log('Product: ', product);
     
     this.loadingProductCreateOrUpdate = true;
@@ -156,8 +156,8 @@ export class ProductPageComponent implements OnDestroy {
       })
   }
 
-  updateProductService(product: {form: FormData, id: string}){
-    this.productsService.updateProductHttp(product.form, product.id)
+  updateProductService(product: {formData: FormData, id: string}){
+    this.productsService.updateProductHttp(product.formData, product.id)
     .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (value) => {
